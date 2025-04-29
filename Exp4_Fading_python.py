@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 from scipy.special import erfc
 
 N=10**6
-ip = np.random.randint(0,1)
-s = 2*ip-1
+ip = np.random.randint(0,2,N)
+signal = 2*ip-1
 
-n = np.sqrt(1/2)*(np.random.randn(N)+1j*np.random.randn(N))
+noise = np.sqrt(1/2)*(np.random.randn(N)+1j*np.random.randn(N))
 
 EbNodB = np.arange(0, 61)
 
@@ -16,12 +16,12 @@ nErrAwgn = np.zeros(len(EbNodB))
 nErrRayleigh = np.zeros(len(EbNodB))
 
 for i in range(len(EbNodB)):
-    y_awgn = s + 10**(-EbNodB[i]/20)*n
+    y_awgn = signal + 10**(-EbNodB[i]/20)*noise
     ipHatawgn = np.real(y_awgn) > 0
     nErrAwgn[i] = np.sum(ip!=ipHatawgn)
 
     h = np.sqrt(1/2)*(np.random.randn(N) + 1j*np.random.randn(N))
-    y_Rayleigh = h*s + 10**(-EbNodB[i]/20)*n
+    y_Rayleigh = h*signal + 10**(-EbNodB[i]/20)*noise
     ipHatRayleigh = np.real(y_Rayleigh/h) > 0
     nErrRayleigh[i] = np.sum(ip!=ipHatRayleigh)
 
